@@ -1,0 +1,137 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@using ica.website.Infrastructure
+@model IEnumerable<WebCarousel>
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "Carousel")
+        </div>
+        <div class="col-md-10">
+            <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                @using (Html.BeginForm("Index", "WebCarousel", FormMethod.Post, new { onsubmit = "saveAll()" }))
+            {
+            <div class="col-md-8 text-right">
+                @Html.Partial("_LanguageDropDownList")
+            </div>
+            <div class="col-md-4">
+                <div style="margin-left:20px;margin-right:20px;">
+                    <input type="submit" value="Save all" class="btn btn-primary" />
+                    <input type="button" value="Add" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" />
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top:20px;">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Words)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BackgroudImage)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IndicateHeader)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IndicateWords)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Order)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Issue)
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.Id)
+                                @Html.TextBoxFor(modelItem => item.Words, new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.BackgroudImage, new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(modelItem => item.IndicateHeader, new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(modelItem => item.IndicateWords, new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(modelItem => item.Order, new { @class = "form-control", style = "width:60px;", type = "number" })
+                            </td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalDelete" + item.Id)>Delete</a>
+                                @Html.Partial("_Delete", item)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                @Html.TextBoxFor(modelItem => item.Content, new { @class = "form-control", id = item.Id + "content" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+                        }
+            </div>
+
+        </div>
+    </div>
+    </div>
+    @Html.Partial("_Add", new WebCarousel() { LanguageId = (long)ViewBag.selected })
+    @*@Html.Partial("_Add", new WebCarousel())*@
+    @section scripts{
+        <script>
+            $(function () {
+                @foreach (var item in Model)
+            {
+                var summer = "$('#"+item.Id+"content').summernote({height: 200,minHeight: 200,maxHeight: null,    });$('#"+item.Id+"content').code($('#"+item.Id+"content').val());";
+                @Html.Raw(summer)
+            }
+                $('.UploadImage').fileupload({
+                    dataType: 'json',
+                    add: function (e, data) {
+                        $("#busy").css("display", "block");
+                        data.submit();
+                    },
+                    done: function (e, data) {
+                        $("#busy").css("display", "none");
+                    },
+                    url: '/WebCarousel/UploadImage',
+                    success: function (data) {
+                        data;
+                        if (data == "done") {
+                            showMessage("Normal", "Successfully import data.");
+                            //window.location.reload();
+                        } else {
+                            alert("please contact admin.");
+                            showMessage("Failed", "Please check your import data or contact your administrator.");
+                        }
+                    },
+                    error: function (failure) {
+                        alert(failure.responseText);
+                    }
+                });
+            })
+            function saveAll() {
+                $("tr[style*='display: none']").remove();
+                @foreach (var item in Model)
+                {
+                    var summer = "$('#"+item.Id+"content').val($('#"+item.Id+"content').code());";
+                    @Html.Raw(summer)
+                }
+            }
+            
+            function droplistOnchanged(e) {
+                var id = $(e).val(); //HubRateRegionQuoteType
+                link = "/WebCarousel/Index?languageId=" + id;
+                window.location.href = link;
+            }
+        </script>
+    }

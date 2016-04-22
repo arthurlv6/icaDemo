@@ -1,0 +1,119 @@
+﻿@using ica.website.Models.MainPage;
+@model SearchResultViewModel
+@{
+    ViewBag.Title = "Search Result";
+}
+<div class="container">
+    <h3>
+        <a class="goBack" href="/"><i class="fa fa-arrow-circle-left"></i></a>@Html.Raw("Search '"+ Model.SearchWords+ "' Result")
+    </h3>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="panel panel-info wow slideInLeft">
+                <div class="panel-heading">
+                    <strong>News</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var item in Model.News)
+                        {
+                        <div class="col-md-12">
+                            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalNewsDetail/@("?id="+item.Id)" onclick="openModal()">@item.Name</a>
+                            <p>@item.ShortDescription)</p>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info wow slideInLeft" id="searchMenus">
+                <div class="panel-heading">
+                    <strong>Menu items</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var item in Model.Menus)
+                        {
+                        <div class="col-md-12">
+                            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalMenuItem/@("?id="+item.Id)" onclick="openModal()">@item.Name</a>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info wow slideInLeft" id="searchEvents">
+                <div class="panel-heading">
+                    <strong>Events</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var item in Model.Events)
+                        {
+                        <div class="col-md-12">
+                            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalEventDetail/@("?id="+item.Id)" onclick="openModal()">@item.Name</a>
+
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info wow slideInLeft" id="searchStaff">
+                <div class="panel-heading">
+                    <strong>Staff</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var item in Model.Staff)
+                        {
+                        <div class="col-md-12">
+                            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalStaffDetail/@("?id="+item.Id)" onclick="openModal()">@item.Name</a>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-info wow slideInLeft" id="searchStories">
+                <div class="panel-heading">
+                    <strong>Stories</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var item in Model.Stories)
+                        {
+                        <div class="col-md-12">
+                            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalStoryDetail/@("?id="+item.Id)" onclick="openModal()">@item.Name</a>
+                            <p>@item.ShortDescription</p>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-3 hidden-xs">
+            <div class="panel panel-info" style="position:fixed;top:230px;width:270px">
+                <div class="panel-heading">
+                    <strong>Category</strong>
+                </div>
+                <div class="panel-body">
+                    <nav id="myScrollspy">
+                        <ul class="nav nav-pills nav-stacked">
+                            @Html.Raw("<li><a href='#icaLogo'>News</a></li>")
+                            @Html.Raw("<li><a href='#searchMenus'>Menus</a></li>")
+                            @Html.Raw("<li><a href='#searchEvents'>Events</a></li>")
+                            @Html.Raw("<li><a href='#searchStaff'>Staff</a></li>")
+                            @Html.Raw("<li><a href='#searchStories'>Stories</a></li>")
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+
+

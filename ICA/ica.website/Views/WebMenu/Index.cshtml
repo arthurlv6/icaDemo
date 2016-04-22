@@ -1,0 +1,90 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@using ica.website.Infrastructure
+<style>
+    .form-control {
+        max-width: none;
+    }
+</style>
+@model IEnumerable<WebMenu>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "MainMenu")
+        </div>
+        <div class="col-md-10">
+@using (Html.BeginForm("SaveAll", "WebMenu", FormMethod.Post, new { onsubmit = "saveAll()" }))
+            
+            {
+                <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                    <div class="col-md-8">
+                        @Html.Partial("_LanguageDropDownList")
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:20px;margin-right:20px;">
+                            <input type="submit" value="Save all" class="btn btn-primary" />
+                            <input data-toggle="modal" data-target="#ModalAdd" type="button" value="Add First Level Menu" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-condensed">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Link)
+                        </th>
+                        <th style="width:80px;">
+                            @Html.DisplayNameFor(model => model.Order)
+                        </th>
+                        <th>
+                            Content
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.Where(d => d.ParentId == null))
+                    {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.Id)
+                            @Html.TextBoxFor(modelItem => item.Name, new { @class = "form-control", style = "font-weight:bold" })
+                        </td>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.Link)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(modelItem => item.Order, new { @class = "form-control", style = "width:80px;font-weight:bold;", type = "number" })
+                        </td>
+                        <td></td>
+                        <td>
+                            <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalAdd" + item.Id)>Add</a>
+                            @Html.Partial("_Add", new WebMenu { ParentId=item.Id,LanguageId=item.LanguageId})
+
+                            <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalDelete" + item.Id)>Delete</a>
+                            @Html.Partial("_Delete", item)
+                        </td>
+                    </tr>
+                    @Html.Partial("_SubMenu", Model, new ViewDataDictionary { { "parentId", item.Id } })
+                    }
+                </table>
+            }
+        </div>
+    </div>
+</div>
+@Html.Partial("_AddFirstLevel", new WebMenu() {ParentId=null, LanguageId = (long)ViewBag.selected })
+@section scripts{
+    <script>
+            function saveAll() {
+                $("tr[style*='display: none']").remove();
+            }
+            function droplistOnchanged(e) {
+                var id = $(e).val(); //HubRateRegionQuoteType
+                link = "/WebMenu/Index?languageId=" + id;
+                window.location.href = link;
+            }
+    </script>
+}

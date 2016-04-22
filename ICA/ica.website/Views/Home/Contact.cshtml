@@ -1,0 +1,72 @@
+﻿@model ica.website.Models.ContactViewModel
+
+@{
+    ViewBag.Title = "Contact";
+}
+<div class="container">
+    @using (Ajax.BeginForm("_Contact", "Home", new AjaxOptions { HttpMethod = "POST", LoadingElementId = "loading", OnSuccess = "OnSuccessReturnContact", OnFailure = "OnFailure" }, new { Id = "Ajaxform" }))
+    {
+        <div class="form-horizontal">
+            <h4>Contact Form</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Send" class="btn btn-primary" />
+                    <img style="display:none" id="loading" src="/Images/Busy.gif"/>
+                    <p id="emailmessage"></p>
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        function clean() {
+            $("#Ajaxform")[0].reset();
+        }
+        function OnSuccessReturnContact(data, status, xhr) {
+            if (data != "failed") {
+                $("#emailmessage").text("Your message is sent out successfully.");
+                    clean();
+                } else {
+                    alert("Please check your input data or contact your administrator.");
+                }
+            }
+            function OnFailure(ajaxContext) {
+                var response = ajaxContext.get_response();
+                var statusCode = response.get_statusCode();
+                alert('Failure, please try later.status code is'+statusCode);
+            }
+    </script>
+</div>

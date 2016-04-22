@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNet.Identity
+@using ica.website.Models;
+@using ica.website.Domain;
+@{ 
+    var languageId = 1;
+    if (Request.Cookies["Company"] != null)
+    {
+        languageId = int.Parse(Request.Cookies["Company"].Values["languageId"].ToString().Trim());
+    }
+    var college = CacheHelper.GetCache<College>(CacheType.College).Where(d => d.LanguageId == languageId).Select(d=>new { d.Login,d.Logoff}).FirstOrDefault();
+}
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        @*<li>
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>*@
+        <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i> @college.Logoff</a></li>
+    </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+        <li><a href="/Account/Login" id="loginLink"><i class="fa fa-sign-in"></i> @college.Login</a></li>
+    </ul>
+}

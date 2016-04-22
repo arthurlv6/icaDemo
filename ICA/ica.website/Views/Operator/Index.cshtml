@@ -1,0 +1,107 @@
+﻿@using ica.website.Models;
+@using ica.website.Models.Operator;
+@using ica.website.Helpers;
+@model ConditionViewModelTarget<OperatorViewModel>
+<div class="container">
+    <div class="row">
+        <div class="row" style="margin-bottom: 20px;margin-top: 20px;">
+            @using (Html.BeginForm("Index", "Operator", FormMethod.Post, new { id = "searchform" }))
+            {
+                @Html.HiddenFor(model => model.Order, new { id = "orderBy" })
+                @Html.HiddenFor(model => model.OrderDirection)
+                @Html.HiddenFor(model => model.ChangeOrderDirection)
+                <div class="col-md-4" style="position: relative">
+                    <div style="position: absolute; top: 7px;">
+                        <label>Page @Html.SelectList_Pages("CurrentPage", Model.CurrentPage, Model.TotalPages, new { onchange = "resetSortDirectionAndSubmit();" })</label>
+                        <label>Display @Html.SelectList_PageSize("PerPageSize", Model.PerPageSize, 10, new { onchange = "resetSortDirectionAndSubmit();" }) records</label>
+                    </div>
+                </div>
+                <div class="col-md-4 text-right">
+                    <div class="input-group">
+                        @Html.TextBoxFor(model => model.Search, new { @class = "form-control", aria_describedby = "basicaddon2", type = "text", placeholder = "Name,Id,Position,Company name...", style = "max-width:none;" })
+                        <span class="input-group-addon" id="basicaddon2"><a onclick="resetSortDirectionAndSubmit()" style="cursor:pointer" name="seach" id="search-btn">Go!</a></span>
+                    </div>
+                </div>
+            }
+            <div class="col-md-2 text-right">
+                @Html.ActionLink("Add Operator", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink",@class="btn btn-primary" })
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Data.FirstOrDefault().HeaderImage)
+                </th>
+                <th>
+                    <a href="#"
+                       data-header-val="UserName"
+                       data-header>
+                        User Name
+                    </a>
+                </th>
+
+                <th>
+                    <a href="#"
+                       data-header-val="Department"
+                       data-header>
+                        Department
+                    </a>
+                </th>
+                <th>
+                    <a href="#"
+                       data-header-val="JobStatus"
+                       data-header>
+                        JobStatus
+                    </a>
+                </th>
+                <th>
+                    <a href="#"
+                       data-header-val="Position"
+                       data-header>
+                        Position
+                    </a>
+                </th>
+                <th>
+                    <a href="#"
+                       data-header-val="Phone"
+                       data-header>
+                        Phone
+                    </a>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Data)
+            {
+                <tr>
+                    <td rowspan="2">
+                        <img src="@item.HeaderImage" width="130" height="130" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JobTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        @Html.Partial("_OperatorRoles", item)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    </div>

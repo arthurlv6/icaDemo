@@ -1,0 +1,26 @@
+﻿@using ica.website.Domain;
+@model IEnumerable<WebMenu>
+@foreach (var item in Model)
+{
+    <tr>
+        <td style="padding-left:40px;">
+            @Html.HiddenFor(modelItem => item.Id)
+            @Html.TextBoxFor(modelItem => item.Name, new { @class = "form-control", style = "border-color:red" })
+        </td>
+        <td>
+            @Html.TextBoxFor(modelItem => item.Link, new { @class = "form-control" })
+        </td>
+        <td>
+            @Html.TextBoxFor(modelItem => item.Order, new { @class = "form-control",style="width:80px;",type="number"})
+        </td>
+        <td>
+            @Html.ActionLink("Content", "EditContent", new { id=item.Id})
+        </td>
+        <td>
+            <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalDelete" + item.Id)>Delete</a>
+            @Html.Partial("_Delete", item)
+        </td>
+    </tr>
+}
+
+

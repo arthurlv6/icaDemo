@@ -1,0 +1,65 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@model IEnumerable<WebLanguage>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "Languages")
+        </div>
+        <div class="col-md-10">
+            @using (Ajax.BeginForm("Index", "WebLanguage", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSuccessReturn", OnFailure = "OnFailure", LoadingElementId = "busy" }))
+            {
+                <div class="row pull-right" style="margin-top:20px;margin-bottom:20px;">
+                    <div style="margin-left:20px;margin-right:20px;">
+                        <input type="submit" value="Save all" class="btn btn-primary" />
+                        <input type="button" value="Add" class="btn btn-primary" data-toggle="modal" data-target="#webLanguageAdd" />
+                    </div>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.profile)
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.Id)
+                                @Html.TextBoxFor(modelItem => item.Name, new { @class = "form-control" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(modelItem => item.profile, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            }
+        </div>
+    </div>
+    </div>
+    @Html.Partial("_Add", new WebLanguage())
+    @section scripts{
+        <script>
+            function onSuccessReturn(data, status, xhr) {
+                if (data != "failed") {
+                    alert("Successfully save all the data.");
+                    showMessage("Normal", "Successfully save all the data.");
+
+                } else {
+                    alert("Please check your input data or contact your administrator.");
+                    showMessage("Failed", "Please check your input data or contact your administrator.");
+                }
+            }
+            function OnFailure(ajaxContext) {
+                var response = ajaxContext.get_response();
+                var statusCode = response.get_statusCode();
+                alert('Failure, please try later.');
+            }
+        </script>
+    }

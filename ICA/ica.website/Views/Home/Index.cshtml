@@ -1,0 +1,123 @@
+﻿@using ica.website.Models.MainPage;
+@model MainPageViewModel
+<div id="carousel-main" class="carousel slide carousel-fade hidden-xs " data-ride="carousel" data-interval="5000">
+    <!-- Indicators -->
+        <ol class="carousel-indicators">
+            @{ int i = 0;
+                string activeClass = "";
+                }
+            @foreach (var item in Model.Carousels)
+            {
+                
+                if (i == 0)
+                {
+                    activeClass="class=active";
+                }
+                else
+                {
+                    activeClass = "";
+                }
+                <li data-target="#carousel-main" data-slide-to=@i @Html.Raw(activeClass) >
+                    <p style="text-align:center"><strong>@item.IndicateHeader</strong><br />@item.IndicateWords</p>
+                </li>
+                i++;
+            }
+        </ol>
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner " role="listbox">
+        @{ int newI = 0;}
+        @foreach (var item in Model.Carousels)
+        {
+            if (newI == 0)
+            {
+                activeClass = "class='item active '";
+            }
+            else
+            {
+                activeClass = "class='item '";
+            }
+            <div @Html.Raw(activeClass) >
+                <img src=@item.BackgroudImage class="img-responsive" alt="@item.IndicateWords">
+                <div style="position: absolute;top: 10%;left:13%;">
+                    <div class="wow fadeInLeft fontLeft" data-wow-delay="0.5s">
+                        <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalCarouselDetail/@("?id="+item.Id)" onclick="openModal()" class="hidden-xs">
+                            @Html.Raw(item.Words)
+                        </a>
+                            @Ajax.ActionLink(Model.College.LearnMore, "ModalCarouselDetail",
+                   new { Id = item.Id },
+                   new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "fullModalContent" },
+                   new { @class = "btn btn-primary", onclick = "openModal()" })
+                    </div>
+                </div>
+            </div>
+            newI++;
+        }
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-main" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-main" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 hidden-lg hidden-md hidden-sm">
+            <div class="embed-responsive embed-responsive-16by9" style="margin-top:10px;margin-bottom:10px;"> 	<iframe class="embed-responsive-item" src="//www.youtube.com/embed/3mY5U9mVZD0" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"> </iframe>           </div>
+        </div>
+        <div class="col-md-12">
+            <img src="@Model.College.EmphasisImage" class="EmphasisImage" style="width:100%; " alt="@Model.College.Name">
+        </div>
+        <div class="col-md-8">
+                <div class="col-md-12">
+                    <h3 style="font-weight:bold">@Model.College.IntroductionHeader</h3>
+                    <img class="img-responsive addImageMargin" style="float: left;padding-bottom:20px;padding-right:20px;" src=@Model.College.IntroductionImage alt="@Model.College.IntroductionHeader" />
+                    <p>@Model.College.IntroductionShort</p>
+                    
+                    @Ajax.ActionLink(Model.College.LearnMore, "ModalMainpageDetail",
+                   new { id = "Introduction" },
+                   new AjaxOptions{InsertionMode = InsertionMode.Replace,UpdateTargetId = "fullModalContent" },
+                   new { onclick = "openModal()", @class = "learnMore" })
+                   <div class="clearfix"></div>
+                </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="textWithground">@Model.College.NewsHeader</h4>
+                    @Html.Partial("_News",Model.News)
+                    <a href="/home/news"><h4 class="textReadmoreWithground" style="margin-top:-10px;">@Model.College.ReadHeader</h4></a>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="textWithground">@Model.College.EventHeader</h4>
+                    @Html.Partial("_Events",Model.Events)
+                    <a href="/home/events"><h4 class="textReadmoreWithground">@Model.College.ReadHeader</h4></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4 class="textWithground">@Model.College.StoryHeader</h4>
+            @Html.Partial("_Stories",Model.Stories)
+            <a href="/Home/stories"><h4 class="textReadmoreWithground">@Model.College.ReadHeader</h4></a>
+            @Html.Partial("_UsefulLinks",Model.Links)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="background-color:lightgray;padding:10px;text-align:center" id="title-principal">@Model.College.DeanMessageHeader</h3>
+        </div>
+        <div class="col-md-3">
+            <img src=@Model.College.DeanImage class="img-responsive" data-retina="http://ica.ac.nz/upload/blogs/9d0faa427a8098dfbfc3e344521ee086.png" alt="@Model.College.DeanMessageHeader">
+        </div>
+        <div class="col-md-9">
+            @Html.Raw(Model.College.DeanShortMessage)
+            @Ajax.ActionLink(Model.College.LearnMore, "ModalMainpageDetail",
+                   new { id ="DeanMessage" },
+                   new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "fullModalContent" },
+                   new { onclick = "openModal()", @class = "learnMore" })
+        </div>
+    </div>
+
+</div>
+@Html.Partial("_Footer",Model.College)

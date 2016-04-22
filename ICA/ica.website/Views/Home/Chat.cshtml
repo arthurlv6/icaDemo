@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Chat";
+}
+<style>
+    .height{
+        min-height:350px;
+    }
+</style>
+<div class="container">
+    <h3>
+        <a class="goBack" href="/"><i class="fa fa-arrow-circle-left"></i></a>Online chat
+    </h3>
+    <div class="row">
+        <div class="col-md-4 hidden-sm hidden-xs">
+            <img src="~/Images/OnlineChat.png" class="img-responsive" />
+        </div>
+        <div class="col-md-8">
+                <div id="divLogin" class="height" style="display:none">
+                    <div id="divalarm"></div>
+                    <input id="btnLogin" type="button" value="Try again" class="btn btn-primary" />
+                </div>
+
+                <div id="divChat" class="height">
+                    <br />
+                    <div style="font-size:large" id="welcome"></div><br />
+                    <div class="input-group">
+                        <input id="txtMessage" type="text" class="form-control" style="max-width:none" placeholder="Type something here...">
+                        <span class="input-group-btn">
+                            <button id="btnSendMessage" class="btn btn-default" type="button">Send</button>
+                        </span>
+                    </div><!-- /input-group -->
+                    <div id="divMessage" style="overflow-y: scroll;max-height:300px;"></div>
+                </div>
+
+                <input id="hUserId" type="hidden" />
+                <input id="hId" type="hidden" />
+                <input id="hUserName" type="hidden" />
+                <input id="hGroup" type="hidden" />
+        </div>
+    </div>
+    </div>
+
+    @section scripts {
+        <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+        <script src="~/signalr/hubs" type="text/javascript"></script>
+        <script>
+            var UserName = "";
+            function scroll() {
+                var wtf = $('#divMessage');
+                var height = wtf[0].scrollHeight;
+                wtf.scrollTop(height);
+            };
+            $(function () { //This section will run whenever we call Chat.cshtml page
+                var objHub = $.connection.myHub;
+                loadClientMethods(objHub);
+                $.connection.hub.start().done(function () {
+                    loadEvents(objHub);
+                    $("#btnLogin").click();
+                });
+            });
+
+            function loadEvents(objHub) {
+                $("#btnLogin").click(function () {
+                    
+                    @{
+                        var user = "client@temporary.com";
+                        if (!string.IsNullOrEmpty(User.Identity.Name))
+                        {
+                            user = User.Identity.Name;
+                        }
+                    }
+                    UserName = "@user";
+                    objHub.server.connect("@user");
+                });
+                $('#btnSendMessage').click(function () {
+                    var msg = $("#txtMessage").val();
+                    if (msg.length > 0) {
+                        var userName = $('#hUserName').val();
+                        // <<<<<-- ***** Return to Server [  SendMessageToGroup  ] *****
+                        objHub.server.sendMessageToGroup(userName, msg);
+                        scroll();
+                    }
+                });
+
+                $("#txtMessage").keypress(function (e) {
+                    if (e.which == 13) {
+                        $('#btnSendMessage').click();
+                    }
+                });
+            }
+            function loadClientMethods(objHub) {
+
+                objHub.client.NoExistAdmin = function () {
+                    var divNoExist = $('<div><h3>There is no Admin to response you, please try later</h3></div>');
+                    $("#divChat").hide();
+                    $("#divLogin").show();
+                    $('#divalarm').prepend(divNoExist);
+                }
+
+                objHub.client.getMessages = function (userName, message) {
+
+                    $("#txtMessage").val('');
+
+                    if(UserName===userName){
+                        $('#divMessage').append('<div><p>' + userName + ': ' + message + '</p></div>');
+                    }else{
+                        $('#divMessage').append('<div><p style="color:blue;">' + userName + ': ' + message + '</p></div>');
+                    }
+                    
+
+                    var height = $('#divMessage')[0].scrollHeight;
+                    $('#divMessage').scrollTop(height);
+                }
+
+                objHub.client.onConnected = function (id, userName, UserID, userGroup) {
+                    var strWelcome = 'Welcome' + +userName;
+                    $('#welcome').append('<div><p>Welcome:' + userName + '</p></div>');
+                    $('#hId').val(id);
+                    $('#hUserId').val(UserID);
+                    $('#hUserName').val(userName);
+                    $('#hGroup').val(userGroup);
+                    $("#divChat").show();
+                    $("#divLogin").hide();
+                }
+            }
+        </script>
+    }

@@ -1,0 +1,49 @@
+﻿@model ica.website.Models.ApplicationUser
+<div class="modal-content">
+    <div class="close-modal" data-dismiss="modal">
+        <div class="lr">
+            <div class="rl">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="modal-body" style="text-align:left">
+                    <!-- Project Details Go Here -->
+                        <div class="row">
+                                <img class="img-responsive img-centered" src="@Model.HeaderImage" alt="" style="float: left;padding:10px;max-height:250px;max-width:250px;">
+                                <h2>@Model.UserName </h2>
+                                <p class="item-intro text-muted">@Model.JobTitle,@Model.Company</p>
+                        </div>
+                        <div class="row">
+                            @Html.Raw(Model.Description)
+                        </div>
+                        <div class="row">
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.PhoneNumber)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Email)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Email)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Address)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Address)
+                                </dd>
+                            </dl>
+                        </div>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

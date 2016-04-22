@@ -1,0 +1,134 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@{ 
+    var languageId = 1;
+    if (Request.Cookies["Company"] != null)
+    {
+        languageId = int.Parse(Request.Cookies["Company"].Values["languageId"].ToString().Trim());
+    }
+    var collegeShortName = CacheHelper.GetCache<College>(CacheType.College).Where(d => d.LanguageId == languageId).FirstOrDefault().ShortName;
+    var menu = CacheHelper.GetCache<WebMenu>(CacheType.WebMenu).Where(d => d.LanguageId == languageId).ToList().Select(d => new { d.Id, d.ParentId, d.Name, d.Link, d.Order });
+    var webTables = CacheHelper.GetCache<WebTable>(CacheType.WebTable).OrderBy(d => d.OrderId).ToList();
+}
+<nav class="navbar navbar-inverse yamm" role="navigation" data-spy="affix" data-offset-top="197" style="z-index:1">
+    <div class="container">
+        <div class="navbar-header" style="margin:0px;">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @if (!string.IsNullOrEmpty(collegeShortName))
+            {
+                    @Html.ActionLink(collegeShortName, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            } 
+        </div>
+        <nav class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @foreach (var level1 in menu.Where(d => d.ParentId==null))
+                {
+                    <li class="dropdown yamm-fw">
+                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @level1.Name<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" style="border-width:0px;background-color:black;opacity: 0.9;">
+                            <li>
+                                <div class="row" style="padding:20px;">
+                                    @{
+                                        int levelCount = 0;
+                                    }
+                                        @foreach (var level2 in menu.Where(d => d.ParentId == level1.Id).OrderBy(d=>d.Order))
+                                        {
+                                            levelCount++;
+                                            string style = "";
+                                            if (levelCount > 1)
+                                            {
+                                                style = "style = text-align:left;border-left:solid;border-color:grey;border-width:1px;";
+                                            }
+                                                <div class="col-md-4" @style>
+                                                    <h3 style="color:#e1c886;margin-top:0px;">@level2.Name</h3>
+                                                    <ul>
+                                                        @foreach (var level3 in menu.Where(d => d.ParentId == level2.Id).OrderBy(d=>d.Order))
+                                                        {
+                                                            <li>@Html.Raw(level3.Link.Replace("***",level3.Name).Replace("@@@","?id="+level3.Id.ToString()))</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                        }
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (!string.IsNullOrEmpty(User.Identity.Name))
+                {
+                    <li class="dropdown yamm-fw">
+                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            MY THINGS<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" style="border-width:0px;background-color:black;opacity: 0.9;">
+                            <li>
+                                <div class="row" style="padding:20px;">
+                                    @if (User.IsInRole("Web Maintenance"))
+                                    {
+                                        <div class="col-md-4">
+                                            <h3 style="color:#e1c886;margin-top:0px;">Website maintenance</h3>
+                                            <ul>
+                                                @foreach (var item in webTables)
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink(item.Name, "SelectTable", "WebPageMaintenance", new { Id = item.Name }, null)
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                    <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                        <h3 style="color:#e1c886;margin-top:0px;">My Operations</h3>
+                                        <ul>
+                                            @if (User.IsInRole("Cache Mangement"))
+                                            {
+                                                <li>
+                                                    @Html.ActionLink("System cache management", "Index", "WebCache")
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Operators Management"))
+                                            {
+                                                <li>
+                                                    @Html.ActionLink("Operators Management", "Index", "Operator")
+                                                </li>
+                                            }
+                                            @if (User.IsInRole("Moodle management"))
+                                            {
+                                                <li>
+                                                    @Html.ActionLink("Moodle management", "Index", "Operator")
+                                                </li>
+                                            }
+                                            <li>
+                                                @Html.ActionLink("Online Chat", "chat", "Home")
+                                            </li>
+                                            @if (User.IsInRole("Operator logs"))
+                                            {
+                                                <li>
+                                                    @Html.ActionLink("Operator logs", "Index", "Operator")
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                        <h3 style="color:#e1c886;margin-top:0px;">My profile</h3>
+                                        <p>Hello:@User.Identity.Name</p>
+                                        @*<img width="130" height="130" class="img-responsive" src="~/Images/Alumni/4.jpg" />*@
+                                        <br />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </nav>
+    </div>
+</nav>
+

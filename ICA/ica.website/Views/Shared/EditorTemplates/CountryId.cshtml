@@ -1,0 +1,15 @@
+﻿
+@using ica.website.Domain;
+@using ica.website.Models
+@using ica.website.Infrastructure
+@model int?
+@{
+    var languageId = (long)ViewBag.selected;
+    var countries = CacheHelper.GetCache<WebCountry>(CacheType.WebCountry).Where(d=>d.LanguageId==languageId).ToList().Select(u => new SelectListItem
+    {
+        Text = u.Name,
+        Value = u.Id.ToString(),
+        Selected = u.Id == Model
+    }).ToArray();
+}
+@Html.DropDownList("", countries, new { @class = "form-control" })

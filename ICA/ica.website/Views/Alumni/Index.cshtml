@@ -1,0 +1,163 @@
+﻿@using ica.website.Models;
+@using ica.website.Helpers;
+@model ConditionViewModel<ApplicationUser>
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "Alumni")
+        </div>
+        <div class="col-md-10">
+
+            <div class="row" style="margin-bottom: 20px;margin-top: 20px;">
+                @using (Html.BeginForm("Index", "Alumni", FormMethod.Post, new { id = "searchform" }))
+            {
+            @Html.HiddenFor(model => model.Order, new { id = "orderBy" })
+            @Html.HiddenFor(model => model.OrderDirection)
+            @Html.HiddenFor(model => model.ChangeOrderDirection)
+            <div class="col-md-4" style="position: relative">
+                <div style="position: absolute; top: 7px;">
+                    <label>Page @Html.SelectList_Pages("CurrentPage", Model.CurrentPage, Model.TotalPages, new { onchange = "resetSortDirectionAndSubmit();" })</label>
+                    <label>Display @Html.SelectList_PageSize("PerPageSize", Model.PerPageSize, 10, new { onchange = "resetSortDirectionAndSubmit();" }) records</label>
+                </div>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="input-group">
+                    @Html.TextBoxFor(model => model.Search, new { @class = "form-control", aria_describedby = "basicaddon2", type = "text", placeholder = "Name,Id,Position,Company name..." })
+                    <span class="input-group-addon" id="basicaddon2"><a onclick="resetSortDirectionAndSubmit()" style="cursor:pointer" name="seach" id="search-btn">Go!</a></span>
+                </div>
+            </div>
+            }
+                <div class="col-md-2 text-right">
+                    @Html.ActionLink("Add Alumni", "Add", null, new { @class = "btn btn-primary" })
+                    @*<a href="#" class="btn btn-primary" style="color: white" data-toggle="modal" data-target="#ModalAdd">Add Alumni</a>*@
+                </div>
+                <div class="col-md-2">
+                    <form id="uploadPicture" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="example1" value="test">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Import data</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Data.FirstOrDefault().HeaderImage)
+                    </th>
+                    <th>
+                        <a href="#"
+                           data-header-val="UserName"
+                           data-header>
+                            User Name
+                        </a>
+                    </th>
+
+                    <th>
+                        <a href="#"
+                           data-header-val="StudentId"
+                           data-header>
+                            StudentId
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#"
+                           data-header-val="Company"
+                           data-header>
+                            Company
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#"
+                           data-header-val="Position"
+                           data-header>
+                            Position
+                        </a>
+                    </th>
+                    <th>
+                        <a href="#"
+                           data-header-val="Relevent"
+                           data-header>
+                            Relevent
+                        </a>
+                    </th>
+                    <th>Action</th>
+                </tr>
+
+                @foreach (var item in Model.Data)
+            {
+            <tr>
+                <td>
+                    <img src="@item.HeaderImage" width="60" />
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JobTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Relevent)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <br />
+                    <a onclick="showTableDetail(this)" style="cursor:pointer">Detail</a><br />
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+            <tr style="display: none">
+                <td colspan="7">
+                    @Html.Partial("_AlumniDetail", item)
+                </td>
+            </tr>
+            }
+
+            </table>
+        </div>
+    </div>
+    </div>
+    @section scripts {
+
+        <script>
+        $(function () {
+            $('#uploadPicture').fileupload({
+                dataType: 'json',
+                //formData : {'test':123},
+                add: function (e, data) {
+                    $("#busy").css("display", "block");
+                    data.submit();
+                },
+                done: function (e, data) {
+                    $("#busy").css("display", "none");
+                },
+                url: '/Alumni/ImportData',
+                success: function (data) {
+                    if (data == "done") {
+                        showMessage("Normal", "Successfully import data.");
+                        window.location.reload();
+                    } else {
+                        alert("please contact admin.");
+                        showMessage("Failed", "Please check your import data or contact your administrator.");
+                    }
+                },
+                error: function (failure) {
+                    alert(failure.responseText);
+                }
+            });
+        });
+        </script>
+    }

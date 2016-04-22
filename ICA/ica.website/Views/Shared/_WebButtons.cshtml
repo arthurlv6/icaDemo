@@ -1,0 +1,20 @@
+﻿@using ica.website.Domain;
+@using ica.website.Models
+@using ica.website.Infrastructure
+@model string
+@{
+    var dbContext = Context.GetContainer().GetInstance<BaseOperations>();
+    var tables = dbContext.Get<WebTable>(d => true);
+}
+<div class="btn-group-vertical" role="group" aria-label="..." style="margin-top:20px;min-width:160px;">
+    @foreach (var item in tables.OrderBy(d => d.OrderId))
+    {
+        var buttonClass = "btn btn-default";
+        if (item.Name == Model)
+        {
+            buttonClass = "btn btn-primary";
+        }
+
+        @Html.ActionLink(item.Name, "SelectTable", "WebPageMaintenance", new { Id = item.Name }, new { Class = @buttonClass, @type = "button" })
+    }
+</div>

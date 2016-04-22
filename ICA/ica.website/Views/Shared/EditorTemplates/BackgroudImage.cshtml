@@ -1,0 +1,14 @@
+﻿
+@using ica.website.Domain;
+@using ica.website.Models
+@using ica.website.Infrastructure
+@model string
+@{
+    var images = CacheHelper.GetCache<WebCarouselBackground>(CacheType.WebCarouselBackground).ToList().Select(u => new SelectListItem
+    {
+        Text = u.Name,
+        Value = u.Path,
+        Selected = u.Path == Model
+    }).ToArray();
+}
+@Html.DropDownList("", images, new { @class = "form-control" })

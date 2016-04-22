@@ -1,0 +1,14 @@
+﻿@using ica.website.Domain
+@model ica.website.Domain.JobStatus
+@{
+    var options = Enum.GetValues(typeof(JobStatus))
+                .Cast<JobStatus>()
+                .Select(t => new SelectListItem
+                {
+                    Text = t.ToString(),
+                    Value = t.ToString(),
+                    Selected = t == Model
+                }).ToArray();
+}
+
+@Html.DropDownList("", options, new { @class = "form-control" })

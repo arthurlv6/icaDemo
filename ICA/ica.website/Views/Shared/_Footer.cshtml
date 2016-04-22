@@ -1,0 +1,39 @@
+﻿@using ica.website.Domain
+@model College
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <img src="@Model.FootBarImage" style="width:100%"  class="img-responsive" alt="FootBarImage" />
+        </div>
+        <div class="col-md-4">
+            <h2 class="footer">@Model.FootNav</h2>
+            <br />
+            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalMainpageDetail/?id=FootNav1" onclick="openModal()">
+                <p>@Model.FootNav1</p>
+            </a>
+            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalMainpageDetail/?id=FootNav2" onclick="openModal()">
+                <p>@Model.FootNav2</p>
+            </a>
+            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalMainpageDetail/?id=FootNav3" onclick="openModal()">
+                <p>@Model.FootNav3</p>
+            </a>
+            <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalMainpageDetail/?id=FootNav4" onclick="openModal()">
+                <p>@Model.FootNav4</p>
+            </a>
+           
+        </div>
+        <div class="col-md-4">
+            <h2 class="footer">@Model.FootCampus</h2>
+            @Html.Raw(Model.FootCampusMap)
+        </div>
+        <div class="col-md-4">
+            <h2 class="footer">@Model.FootContact</h2>
+            <br />
+            <p>@Model.PhoneNumber</p>
+            <p>@Model.Fax</p>
+            <p>@Model.Email</p>
+            <p>@Model.Address</p>
+            @Html.Raw(Model.Social)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@using ica.website.Domain;
+@model List<WebDepartment>
+@{
+    ViewBag.Title = "Staff";
+}
+<div class="container">
+    <h3>
+        <a class="goBack" href="/"><i class="fa fa-arrow-circle-left"></i></a>Our staff
+    </h3>
+    <div class="row">
+        <div class="col-sm-9">
+            @foreach (var item in Model)
+            {
+                <div class="panel panel-info wow slideInLeft" id="@("staffType"+item.Id)">
+                    <div class="panel-heading">
+                        <strong>@item.Name</strong>
+                    </div>
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div class="row">
+                            @foreach (var staff in item.WebStaff.OrderBy(d=>d.Order))
+                            {
+                                <div class="col-md-4" style="min-height:370px;">
+                                    <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalStaffDetail/@("?id="+staff.Id)" onclick="openModal()">
+                                        @Html.Raw(staff.Image.Replace(">", "class='img-responsive img-rounded' alt='"+staff.Name+"' >"))
+                                    </a>
+                                    <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalStaffDetail/@("?id="+staff.Id)" onclick="openModal()">
+                                        <h3>@staff.Name</h3>
+                                    </a>
+                                    @Html.Raw("<p style=color:green>" + staff.Position + "</p>")
+                                    @Html.Raw("<p>" + staff.Email + "</p>")
+                                    @Html.Raw("<p>" + staff.Phone + "</p>")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="col-sm-3 hidden-xs">
+            <div class="panel panel-info" style="position:fixed;top:230px;width:270px">
+                <div class="panel-heading">
+                    <strong>Category</strong>
+                </div>
+                <div class="panel-body">
+                    <nav id="myScrollspy">
+                        <ul class="nav nav-pills nav-stacked">
+                            @{ int i = 0;}
+                            @foreach (var item in Model)
+                            {
+                                if (i == 0)
+                                {
+                                    @Html.Raw("<li><a href='#icaLogo'>" + item.Name + "</a></li>");
+                                }
+                                else
+                                {
+                                    @Html.Raw("<li><a href='#staffType" + item.Id + "'>" + item.Name + "</a></li>");
+                                }
+                                i++;
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

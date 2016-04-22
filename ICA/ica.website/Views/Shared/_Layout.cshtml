@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="~/Images/smallLogo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ICA is located in Central Auckland. ICA  provides education which enables students to optimize their potential and become internationally competitive in the market place.">
+    <meta name="keywords" content="ICA International College of Auckland Central Auckland Education students optimize potential internationally competitive market place taining study certificate ">
+    <title>@ViewBag.Title - International College of Auckland</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/other")
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-75231141-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+@using ica.website.Models;
+@using ica.website.Domain;
+@{
+    var languageId = 1;
+    if (Request.Cookies["Company"] != null)
+    {
+        languageId = int.Parse(Request.Cookies["Company"].Values["languageId"].ToString().Trim());
+    }
+    var college = CacheHelper.GetCache<College>(CacheType.College).Where(d => d.LanguageId == languageId).Select(d=>new { d.Icon,d.Social,d.Name,d.TermsLink,d.PolicyLink,d.HomeLink,d.Language}).FirstOrDefault();
+    var WebLanguages = CacheHelper.GetCache<WebLanguage>(CacheType.WebLanguage).OrderBy(d => d.Id).ToList();
+}
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="200">
+    <div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>
+    <div class="portfolio-modal modal fade" id="fullModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content modalBackground">
+            <div class="close-modal" data-dismiss="modal" onclick="dismiss()">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container " style="background-color:white;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="modal-body" style="text-align:left">
+                            <div id="fullModalContent"></div>
+                            <div class="clearfix"></div>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="dismiss()"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 headerLeft" style="padding:0px;">
+                <a href="/">
+                    <img src="@college.Icon" id="icaLogo" alt="International college of auckland logo icon" />
+                </a>
+            </div>
+            <div class="col-sm-6 " style="padding:0px;">
+                <div class="row headerRight">
+                    <p style="margin-bottom:10px;margin-top:10px;">
+                        @college.Language :
+                        @foreach (var item in WebLanguages)
+                        {
+                            string badge = "";
+                            if (item.Id == languageId)
+                            {
+                                badge = "badge";
+                            }
+                            @Html.ActionLink(item.Name, "ChangeLanguage", "Home", new { LanguageId = item.Id }, new { @class = badge })
+                            @Html.Raw("&nbsp&nbsp")
+                        }
+                    </p>
+                </div>
+                <div class="row" style="height:40px;">
+                    <div class="input-group headerSearch">
+                        <input id="searchInput" type="text" class="form-control" placeholder="Search" style="max-width:none">
+                        <span class="input-group-btn">
+                            <button type="button" onclick="Search()" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row" style="height:50px;">
+                    <div class="headerSociety">
+                        @Html.Raw(college.Social)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_Menu")
+    <div id="mainBody" style="margin-bottom:20px;">
+        @RenderBody()
+    </div>
+    <br />
+    <nav id="footer">
+        <div class="container">
+            <div class="pull-left fnav">
+                <p class="footerWords">@college.Name</p>
+                <ul style="float:left;list-style:none;margin-top:10px;">
+                    <li style="float:left;"><a class="footerLink" href="#icaLogo">@college.HomeLink</a></li>
+
+                    <li style="float:left;">
+                        @Ajax.ActionLink(college.TermsLink, "ModalMainpageDetail", "Home",
+                   new { id = "Terms" },
+                   new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "fullModalContent" },
+                   new { onclick = "openModal()", @class = "footerLink" })
+                    </li>
+                    <li style="float:left;">
+
+                        @Ajax.ActionLink(college.PolicyLink, "ModalMainpageDetail", "Home", new { id = "Policy" },
+                   new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "fullModalContent" },
+                   new { onclick = "openModal()", @class = "footerLink" })
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <img src="/Images/Busy.gif" style="display: none;z-index: 2;" id="busy" class="centeredForBusy" alt="Busy icon" />
+    @Html.Partial("_SendEmail")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

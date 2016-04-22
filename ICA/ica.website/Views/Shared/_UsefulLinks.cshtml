@@ -1,0 +1,15 @@
+﻿@using ica.website.Domain
+@model IEnumerable<WebUsefulLink>
+<h4 class="textWithground">Useful Links</h4>
+<ul id="nav-sidebar" style="margin-bottom:0px;">
+    @foreach (var item in Model)
+    {
+        <li>
+            <a @item.link>
+                <figure><img src="@item.Profile" alt="@item.Name"></figure>
+                <strong class="title-nav-sidebar">@item.Name</strong> 
+                <p style="padding-left:66px;">@item.Content</p>
+            </a>
+        </li>
+    }
+</ul>

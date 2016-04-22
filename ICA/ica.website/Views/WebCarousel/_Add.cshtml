@@ -1,0 +1,92 @@
+﻿@using ica.website.Domain;
+@model WebCarousel
+<div class="modal fade" id="modalAdd">
+    <table style="height:100%;width:100%">
+        <tr>
+            <td valign="middle">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title" id="myModalLabel">Add</h3>
+                        </div>
+                        @using (Html.BeginForm("Add", "WebCarousel", FormMethod.Post, null))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(d=>d.LanguageId)
+                            <div class="modal-body">
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Words, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.Words, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Words, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.BackgroudImage, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.BackgroudImage, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.BackgroudImage, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.IndicateHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.IndicateHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.IndicateHeader, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.IndicateWords, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.IndicateWords, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.IndicateWords, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Issue, htmlAttributes: new { @class = "control-label col-md-4" })
+                                        <div class="col-md-8">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.Issue)
+                                                @Html.ValidationMessageFor(model => model.Issue, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <img class="pull-left" src="/Images/Busy.gif" id="addEventBusy" style="display: none" />
+                                <label class="pull-left" id="addEventMessage"></label>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div><!-- /.modal -->
+

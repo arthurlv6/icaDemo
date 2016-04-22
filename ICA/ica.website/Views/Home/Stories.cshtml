@@ -1,0 +1,65 @@
+﻿@using ica.website.Domain;
+@model List<WebDepartment>
+@{
+    ViewBag.Title = "Stories";
+}
+<div class="container">
+    <h3>
+        <a class="goBack" href="javascript:history.back()"><i class="fa fa-arrow-circle-left"></i></a>Our student successful stories
+    </h3>
+    <div class="row">
+        <div class="col-sm-9">
+            @foreach (var item in Model)
+            {
+                <div class="panel panel-info wow slideInLeft" id="@Html.Raw("Type"+item.Id)" >
+                    <div class="panel-heading">
+                        <strong>@item.Name</strong>
+                    </div>
+                    <div class="panel-body" style="min-height: 200px;">
+                        <div class="row">
+                            @foreach (var story in item.WebStories)
+                            {
+                                <div class="col-md-4" style="min-height:300px;">
+                                    <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalStoryDetail/@("?id="+story.Id)" onclick="openModal()">
+                                        @Html.Raw(story.Image.Replace(">", "class='img-responsive img-rounded' alt='"+story.Name+"' >"))
+                                    </a>
+                                    <a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#fullModalContent" href="/Home/ModalStoryDetail/@("?id="+story.Id)" onclick="openModal()">
+                                        <h3>@story.Name</h3>
+                                    </a>
+                                    <p>@story.ShortDescription</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-sm-3 hidden-xs">
+            <div class="panel panel-info" style="position:fixed;top:230px;width:270px">
+                <div class="panel-heading">
+                    <strong>Category</strong>
+                </div>
+                <div class="panel-body">
+                    <nav id="myScrollspy">
+                        <ul class="nav nav-pills nav-stacked">
+                            @{ int i = 0;}
+                            @foreach (var item in Model)
+                            {
+                                if (i == 0)
+                                {
+                                    @Html.Raw("<li><a href='#icaLogo'>" + item.Name + "</a></li>");
+                                }
+                                else
+                                {
+                                    @Html.Raw("<li><a href='#Type" + item.Id + "'>" + item.Name + "</a></li>");
+                                }
+                                i++;
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

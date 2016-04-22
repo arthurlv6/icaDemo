@@ -1,0 +1,100 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@using ica.website.Infrastructure
+@model IEnumerable<WebNews>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "News")
+        </div>
+        <div class="col-md-10">
+            <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                @using (Html.BeginForm("Index", "WebNews", FormMethod.Post, new { onsubmit = "saveAll()" }))
+            {
+                    <div class="col-md-8 text-right">
+                        @Html.Partial("_LanguageDropDownList")
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:20px;margin-right:20px;">
+                            <input type="submit" value="Save all" class="btn btn-primary" />
+                            <input type="button" value="Add" class="btn btn-primary" data-toggle="modal" data-target="#modalAdd" />
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top:20px;">
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ShortDescription)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Date)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.WebNewsTypeId)
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => item.Id)
+                                        @Html.HiddenFor(modelItem => item.LanguageId)
+                                        @Html.TextBoxFor(modelItem => item.Name, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.ShortDescription, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.Date, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.WebNewsTypeId, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalDelete" + item.Id)>Delete</a>
+                                        @Html.Partial("_Delete", item)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        @Html.TextBoxFor(modelItem => item.Content, new { @class = "form-control", id = item.Id + "content" })
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    </div>
+    @Html.Partial("_Add", new WebNews() { LanguageId = (long)ViewBag.selected })
+    @section scripts{
+        <script>
+            $(function () {
+                @foreach (var item in Model)
+            {
+                var summer = "$('#"+item.Id+"content').summernote({height: 200,minHeight: 200,maxHeight: null,    });$('#"+item.Id+"content').code($('#"+item.Id+"content').val());";
+                @Html.Raw(summer)
+            }
+            })
+            function droplistOnchanged(e) {
+                var id = $(e).val();
+                link = "/WebNews/Index?languageId=" + id;
+                window.location.href = link;
+            }
+            function saveAll() {
+                @foreach (var item in Model)
+                {
+                    var summer = "$('#"+item.Id+"content').val($('#"+item.Id+"content').code());";
+                    @Html.Raw(summer)
+                }
+            }
+        </script>
+    }

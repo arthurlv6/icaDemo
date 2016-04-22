@@ -1,0 +1,69 @@
+﻿@using ica.website.Domain;
+@using ica.website.Models;
+@using ica.website.Infrastructure;
+@model WebMenu
+<div class="modal fade" id=@Html.Raw("ModalAdd" + Model.ParentId) tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <table style="height:100%;width:100%">
+        <tr>
+            <td valign="middle">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3 class="modal-title" id="myModalLabel">Add</h3>
+                        </div>
+                            <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-horizontal">
+                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                    <div class="col-md-10">
+                                                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", id = "AddName" + Model.ParentId })
+                                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick=@Html.Raw("Add" + Model.ParentId+"()") class="btn btn-primary">Confirm</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div><!-- /.modal -->
+
+<script>
+    function @Html.Raw("Add" + Model.ParentId + "()") {
+        var requrl = "/WebMenu/_Add";
+        var data={
+            parentId: @Model.ParentId.ToString(),
+            languageId: @Model.LanguageId.ToString(),
+            name: $(@Html.Raw("'#AddName" + @Model.ParentId.ToString()+"'")).val()
+        }
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                cashe: true,
+                url: requrl,
+                data: data,
+                success: function (data) {
+                    //alert(data);
+                    if (data == "fail") {
+                        alert("Failed to change data, please try later.");
+                        return;
+                    }
+                    location.reload();
+                },
+                error: function (failure) {
+                    alert(failure.responseText);
+                }
+            });
+        }
+</script>

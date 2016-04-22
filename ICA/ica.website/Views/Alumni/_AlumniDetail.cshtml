@@ -1,0 +1,76 @@
+﻿@model ica.website.Models.ApplicationUser
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdateDatetime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdateDatetime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Public)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Public)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JobStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.JobStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JobType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.JobType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+        @if (!string.IsNullOrEmpty(User.Identity.Name) && User.IsInRole("Student Comment"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Remark)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Remark)
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.Raw(Model.Description)
+        </dd>
+    </dl>
+</div>

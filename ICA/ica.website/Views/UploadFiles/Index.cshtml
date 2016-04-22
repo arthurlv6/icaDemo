@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using ica.website.Models.UploadFile;
+@model UploadFileViewModel
+@*@{
+    var root = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~/");
+}*@
+
+<div class="container">
+    <div class="col-md-2">
+        @Html.Partial("_WebButtons", "FileLibrary")
+    </div>
+    <div class="col-md-10">
+        @using (Html.BeginForm("Upload", "UploadFiles", FormMethod.Post, new { encType = "multipart/form-data" }))
+        {
+            <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                <div class="col-md-1">
+                    <strong>Filter</strong>
+                </div>
+                <div class="col-md-2">
+                    @Html.DropDownList("list", Model.CategoryList, new { @class = "form-control", onchange = "onCategoryChanged(this)" })
+                </div>
+                <div class="col-md-1">
+                    <strong>Category</strong>
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(m => m.Category, new { @class = "form-control", holdplace = "Category" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Files, new { @class = "form-control", type = "file", name = "Files", multiple = true })
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Upload</button>
+                </div>
+            </div>
+            <p style="color:blue">if uploaded file extension is jpg, png or bmp, the single picture file's maximum size can't be greater than 1 MB</p>
+        }
+        <hr />
+        @{
+            var i = 1;
+            foreach (var item in Model.Data.Data)
+            {
+                if (i % 6 == 1)
+                {
+                    @Html.Raw("<div class='row'>")
+                }
+                <div class="col-xs-6 col-md-2">
+                    <div href="#" class="thumbnail">
+                        @if (item.FileType == ".png" || item.FileType == ".bmp" || item.FileType == ".jpg")
+                        {
+                            <img src="@Html.Raw( "/images/filelibrary/"+item.Id+item.FileType )" alt="image">
+                            <input class="form-control url" type="text" style="font-size:xx-small" value="@Html.Raw("/images/filelibrary/"+item.Id+item.FileType )" />
+                        }
+                        else
+                        {
+                            <img src="@Html.Raw( "/images/filelibrary/file.png" )" alt="image">
+                            <input class="form-control url" type="text" style="font-size:xx-small" value="@Html.Raw( "/images/filelibrary/"+item.Name )" />
+                        }
+                    </div>
+                    <a onclick="Delete(this)" data-id="@item.Id" style="cursor:pointer; position:absolute;top:5px;right:20px; " class="fa fa-times fa-3x"></a>
+                </div>
+                if (i % 6 == 0)
+                {
+                    @Html.Raw("</div>")
+                }
+                i++;
+            }
+        }
+    </div>
+
+</div>
+<script>
+    function Delete(e) {
+        var id = $(e).attr("data-id");
+        var requrl = "/UploadFiles/_Delete/" + id;
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            cashe: false,
+            url: requrl,
+            success: function (data) {
+                //alert(data);
+                if (data == "fail") {
+                    alert("Failed to change data, please try later.");
+                    return;
+                }
+                $(e).parent().hide();
+                $(e).hide();
+            },
+            error: function (failure) {
+                alert(failure.responseText);
+            }
+        });
+    }
+    function onCategoryChanged(e) {
+        var id = $(e).val();
+        //alert(id);
+        link = "/UploadFiles/Index/" + id;
+        window.location.href = link;
+    }
+</script>
+

@@ -1,0 +1,29 @@
+﻿@using ica.website.Models;
+@using ica.website.Models.Operator;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model OperatorViewModel
+@{
+    var roles = CacheHelper.GetCache<IdentityRole>(CacheType.IdentityRole).ToList();
+}
+<div class="row">
+    <div class="col-md-12">
+        <label>User's roles</label>
+        <a href="#" data-toggle="modal" data-target=@Html.Raw("#operatorModalEdit" + Model.Id)>Edit</a>
+        <div class="modal fade" id=@Html.Raw("operatorModalEdit"+Model.Id) tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            @Html.Partial("_OperatorEdit", Model)
+        </div>
+    </div>
+    @foreach (var role in roles)
+    {
+        var check = "";
+        if (Model.Roles.Any(d => d.RoleId == role.Id))
+        {
+            check = " checked ";
+        }
+        <div class="col-md-3">
+            <input class="class_name" disabled readonly id=@Html.Raw("PostedCarriers_ids"+role.Id) name="PostedCarriers.ids" @check type="checkbox" value=@role.Id>
+            <label class="class_name" style="font-weight:normal;" for=@Html.Raw("PostedCarriers_ids"+role.Id)>@role.Name</label>
+        </div>
+    }
+</div>
+

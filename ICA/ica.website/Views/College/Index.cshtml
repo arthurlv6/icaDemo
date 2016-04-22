@@ -1,0 +1,600 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@using ica.website.Infrastructure
+@model ica.website.Domain.College
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "College")
+        </div>
+        <div class="col-md-10">
+            <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                <div class="col-md-5">
+                   @Html.Partial("_LanguageDropDownList")
+                </div>
+                <div class="col-md-1">
+                    <div style="margin-left:20px;margin-right:20px;">
+                        <input type="button" value="Save" onclick="formSubmit()" class="btn btn-primary" style="margin-top: 2px;" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <form class="uploadImage" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="imageName" value="Icon">
+                        <input type="hidden" name="languageIdForImage" value="@Model.LanguageId">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Icon(260*130)</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                    <form class="uploadImage" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="imageName" value="Emphasis">
+                        <input type="hidden" name="languageIdForImage" value="@Model.LanguageId">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Emphasis</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                    <form class="uploadImage" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="imageName" value="Introduction">
+                        <input type="hidden" name="languageIdForImage" value="@Model.LanguageId">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Introduction</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                    <form class="uploadImage" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="imageName" value="Dean">
+                        <input type="hidden" name="languageIdForImage" value="@Model.LanguageId">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Dean</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                    <form class="uploadImage" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="imageName" value="Bar">
+                        <input type="hidden" name="languageIdForImage" value="@Model.LanguageId">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Bar</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @using (Html.BeginForm("Save", "College", FormMethod.Post, new { id="collegeForm" }))
+            {
+                
+                <div class="row">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.LanguageId)
+                    @Html.HiddenFor(model => model.Icon)
+                    @Html.HiddenFor(model => model.EmphasisImage)
+                    @Html.HiddenFor(model => model.IntroductionImage)
+                    @Html.HiddenFor(model => model.DeanImage)
+                    @Html.HiddenFor(model => model.FootBarImage)
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.Icon, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <img class="img-responsive" id="showIcon" src="@Model.Icon" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.EmphasisImage, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <img class="img-responsive" id="showEmphasisImage" src="@Model.EmphasisImage" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.IntroductionImage, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <img class="img-responsive" id="showIntroductionImage" src="@Model.IntroductionImage" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.DeanImage, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <img class="img-responsive" id="showDeanImage" src="@Model.DeanImage" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.FootBarImage, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    <img class="img-responsive" id="showFootBarImage" src="@Model.FootBarImage" />
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ShortName, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Social, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Social, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Social, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LearnMore, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.LearnMore, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.LearnMore, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.HomeLink, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.HomeLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.HomeLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Login, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Logoff, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Logoff, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Logoff, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootNav, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootNav, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootCampus, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootCampus, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootCampus, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootCampusMap, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootCampusMap, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootCampusMap, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootContact, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootContact, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootContact, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ReadHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.ReadHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ReadHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StoryHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.StoryHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.StoryHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.NewsHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.NewsHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.NewsHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EventHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.EventHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.EventHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LinkeHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.LinkeHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.LinkeHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IntroductionHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.IntroductionHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.IntroductionHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.IntroductionShort, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.IntroductionShort, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.IntroductionShort, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.Introduction, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Introduction, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TermsLink, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.TermsLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.TermsLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.Terms, htmlAttributes: new { @class = "control-label" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        @Html.EditorFor(model => model.Terms, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PolicyLink, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.PolicyLink, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PolicyLink, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.Policy, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.Policy, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeanMessageHeader, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.DeanMessageHeader, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DeanMessageHeader, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DeanShortMessage, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.DeanShortMessage, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DeanShortMessage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.DeanMessage, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DeanMessage, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootNav1, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootNav1, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav1, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.FootNav1Content, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav1Content, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootNav2, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootNav2, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav2, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.FootNav2Content, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav2Content, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootNav3, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootNav3, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav3, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.FootNav3Content, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav3Content, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FootNav4, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.FootNav4, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav4, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.FootNav4Content, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FootNav4Content, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('#Introduction').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#Introduction').code($('#Introduction').val());
+            $('#DeanMessage').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#DeanMessage').code($('#DeanMessage').val());
+
+            $('#FootNav1Content').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#FootNav1Content').code($('#FootNav1Content').val());
+
+            $('#FootNav2Content').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#FootNav2Content').code($('#FootNav2Content').val());
+
+            $('#FootNav3Content').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#FootNav3Content').code($('#FootNav3Content').val());
+
+            $('#FootNav4Content').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#FootNav4Content').code($('#FootNav4Content').val());
+
+            $('#Terms').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#Terms').code($('#Terms').val());
+
+            $('#Policy').summernote({
+                height: 300,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+            });
+            $('#Policy').code($('#Policy').val());
+
+            $('.uploadImage').fileupload({
+                dataType: 'json',
+                add: function (e, data) {
+                    $("#busy").css("display", "block");
+                    data.submit();
+                },
+                done: function (e, data) {
+                    $("#busy").css("display", "none");
+                },
+                url: '/College/UploadImage',
+                success: function (data) {
+                    if (data.indexOf("done") >= 0) {
+                        var slash = data.indexOf("/");
+                        var type = data.substring(4, slash);
+                        var imagePath=data.substring(slash);
+                        if (type == "Icon") {
+                            $("#showIcon").attr("src", imagePath);
+                            $("#Icon").val(imagePath);
+                        }
+                        if (type == "Emphasis") {
+                            $("#showEmphasisImage").attr("src", imagePath);
+                            $("#EmphasisImage").val(imagePath);
+                        }
+                        if (type == "Introduction") {
+                            $("#showIntroductionImage").attr("src", imagePath);
+                            $("#IntroductionImage").val(imagePath);
+                        }
+                        if (type == "Dean") {
+                            $("#showDeanImage").attr("src", imagePath);
+                            $("#DeanImage").val(imagePath);
+                        }
+                        if (type == "Bar") {
+                            $("#showFootBarImage").attr("src", imagePath);
+                            $("#FootBarImage").val(imagePath);
+                        }
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function (failure) {
+                    alert(failure.responseText);
+                }
+            });
+        })
+        function saveContent() {
+            $('#Introduction').val($('#Introduction').code());
+            $('#DeanMessage').val($('#DeanMessage').code());
+
+            $('#FootNav1Content').val($('#FootNav1Content').code());
+            $('#FootNav2Content').val($('#FootNav2Content').code());
+            $('#FootNav3Content').val($('#FootNav3Content').code());
+            $('#FootNav4Content').val($('#FootNav4Content').code());
+
+            $('#Terms').val($('#Terms').code());
+            $('#Policy').val($('#Policy').code());
+        }
+        function droplistOnchanged(e) {
+            var id = $(e).val(); //HubRateRegionQuoteType
+            link = "/College/Index?languageId=" + id;
+            window.location.href = link;
+        }
+        function formSubmit() {
+            saveContent();
+            $("#collegeForm").submit();
+        }
+    </script>
+}
+
+
+

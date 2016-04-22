@@ -1,0 +1,64 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@using ica.website.Infrastructure
+@model IEnumerable<WebCarouselBackground>
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            @Html.Partial("_WebButtons", "CarouselBackground")
+        </div>
+        <div class="col-md-10">
+            <div class="row" style="margin-top:20px;margin-bottom:20px;">
+                <div class="col-md-12">
+                    <form id="uploadPicture" class="pull-right" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="example1" value="test">
+                        <div class="fileupload-buttonbar">
+                            <span class="fileinput-button">
+                                <a href="javascript:void(0)" class="btn btn-primary">Add background image (Dimensions 1385*398)</a>
+                                <input type="file" name="files">
+                            </span>
+                        </div>
+                    </form>
+                </div>
+          @foreach (var item in Model)
+          {
+              <div class="col-md-6">
+                  <h4>@item.Name</h4>
+                  <img src="@item.Path" class="img-responsive" />
+              </div>
+          }
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(function () {
+            $('#uploadPicture').fileupload({
+                dataType: 'json',
+                //formData : {'test':123},
+                add: function (e, data) {
+                    $("#busy").css("display", "block");
+                    data.submit();
+                },
+                done: function (e, data) {
+                    $("#busy").css("display", "none");
+                },
+                url: '/WebCarouselBackground/UploadImage',
+                success: function (data) {
+                    if (data == "done") {
+                        window.location.reload();
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function (failure) {
+                    alert(failure.responseText);
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,19 @@
+﻿@using ica.website.Models;
+@using ica.website.Domain;
+@{
+    var languages = CacheHelper.GetCache<WebLanguage>(CacheType.WebLanguage).ToList().Select(u => new SelectListItem
+    {
+        Text = u.Name,
+        Value = u.Id.ToString(),
+        Selected = u.Id == (long)ViewBag.selected
+    }).ToArray();
+}
+<div class="row">
+    <div class="col-md-6">
+        <span style="font-size:large">Choose language</span>
+    </div>
+    <div class="col-md-6">
+        @Html.DropDownList("list", languages, new { @class = "form-control", onchange = "droplistOnchanged(this)" })
+    </div>
+</div>
+

@@ -1,0 +1,207 @@
+﻿@using ica.website.Models.MainPage;
+@model MainPageMenuViewModel
+<nav class="navbar navbar-inverse yamm" role="navigation" data-spy="affix" data-offset-top="197" style="z-index:1">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("ICA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <nav class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown yamm-fw">
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        WHY STUDY AT ICA<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="border-width:0px;background-color:black">
+                        <li>
+                            <div class="row" style="padding:20px;">
+                                <div class="col-md-4">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Academic & Career Support</h3>
+                                    <ul>
+                                        <li><a href="#">Mentoring System</a></li>
+                                        <li><a href="#">Research &amp; Innovation Center</a></li>
+                                        <li><a href="#">Scholarships</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Who We Are</h3>
+                                    <ul>
+                                        <li><a href="http://ica.ac.nz/why-study-at-ica/mentoring-system.html">Our School</a></li>
+                                        <li><a href="http://ica.ac.nz/why-study-at-ica/research-innovation-center.html">Our Staff</a></li>
+                                        <li><a href="http://ica.ac.nz/why-study-at-ica/scholarships.html">Code of Practice</a></li>
+                                        <li>
+                                            <a href="/Alumni/AlumniPublic">
+                                                Alumni
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Home/Index">
+                                                Event
+                                            </a>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <ul id="list-social">
+                                            <li id="icon-facebook"><a href="https://www.facebook.com/pages/International-College-of-Auckland/224413130934695">Facebook</a></li>
+                                            <li id="icon-twitter"><a href="#">Twitter</a></li>
+                                            <li id="icon-gplus"><a href="#">Google Plus</a></li>
+                                            <li id="icon-linkedin"><a href="#">Linkedin</a></li>
+                                            <li id="icon-youtube"><a href="#">Youtube</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="row" style="color:white;float:none">
+                                        <p>Contact Phone:@Model.College.PhoneNumber</p>
+                                        <p>Email:</p>
+                                        <p>Address:</p>
+                                    </div>
+                                    @*<img src="~/Images/Main/4.png" />*@
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown yamm-fw">
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        PROGRAMS & COURSES<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="border-width:0px;background-color:black">
+                        <li>
+                            <div class="row" style="padding:20px;">
+                                <div class="col-md-5">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Business</h3>
+                                    <ul><li><a href="http://ica.ac.nz/programs-courses/national-diploma-in-business-level-5.html">National Diploma in Business (Level 5)</a></li><li><a href="http://ica.ac.nz/programs-courses/nzim-diploma-in-management-level-5.html">NZIM diploma in Management (Level 5)</a></li><li><a href="http://ica.ac.nz/programs-courses/new-zealand-diploma-in-business-level-6.html">New Zealand Diploma in Business (Level 6)</a></li><li><a href="http://ica.ac.nz/programs-courses/nzim-diploma-in-management-level-6.html">NZIM Diploma in Management (Level 6)</a></li><li><a href="http://ica.ac.nz/programs-courses/diploma-in-business-project-management-level-7.html">Diploma in Business Project Management (Level 7)</a></li><li><a href="http://ica.ac.nz/programs-courses/diploma-in-business-healthcare-level-7.html">Diploma in Business Healthcare (Level 7)</a></li><li><a href="http://ica.ac.nz/programs-courses/diploma-in-business-level-7.html">Diploma in Business (Level 7)</a></li></ul>
+                                </div>
+                                <div class="col-md-7" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Computer</h3>
+                                    <ul><li><a href="http://ica.ac.nz/programs-courses/computer-systems-support-level-7.html">Computer Systems Support (Level 7)</a></li><li><a href="http://ica.ac.nz/programs-courses/national-diploma-in-computing-level-5.html">National Diploma in Computing (Level 5)</a></li><li><a href="http://ica.ac.nz/programs-courses/microsoft-it-academy.html">Microsoft IT Academy</a></li></ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown yamm-fw">
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        INTERNATIONAL STUDENTS<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="border-width:0px;background-color:black">
+                        <li>
+                            <div class="row" style="padding:20px;">
+                                <div class="col-md-4">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Living in New Zealand</h3>
+                                    <ul><li><a href="http://ica.ac.nz/international-students/living-in-new-zealand.html">Living in New Zealand</a></li><li><a href="http://ica.ac.nz/international-students/studying-in-new-zealand.html">Studying in New Zealand</a></li><li><a href="http://ica.ac.nz/international-students/working-in-new-zealand.html">Working in New Zealand</a></li><li><a href="http://ica.ac.nz/international-students/what-people-in-new-zealand-are-like.html">What people in New Zealand are like</a></li><li><a href="http://ica.ac.nz/international-students/where-to-stay.html">Where to stay</a></li><li><a href="http://ica.ac.nz/international-students/cars-and-driving.html">Cars and driving</a></li><li><a href="http://ica.ac.nz/international-students/food.html">Food</a></li><li><a href="http://ica.ac.nz/international-students/money-matters.html">Money matters</a></li><li><a href="http://ica.ac.nz/international-students/culture-shock.html">Culture shock</a></li><li><a href="http://ica.ac.nz/international-students/how-to-get-around-transport.html">How to get around - transport</a></li></ul>
+                                </div>
+                                <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Arriving in New Zealand</h3>
+                                    <ul><li><a href="http://ica.ac.nz/international-students/arriving-in-new-zealand.html">Arriving in New Zealand</a></li><li><a href="http://ica.ac.nz/international-students/clearing-customs.html">Clearing Customs</a></li><li><a href="http://ica.ac.nz/international-students/redgreen-ways-out.html">Red/Green Ways Out</a></li><li><a href="http://ica.ac.nz/international-students/after-you-arrived.html">After You Arrived</a></li></ul>
+                                </div>
+                                <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Before you Leave Home</h3>
+                                    <ul><li><a href="http://ica.ac.nz/international-students/before-you-leave-home.html">Before you Leave Home</a></li><li><a href="http://ica.ac.nz/international-students/what-to-bring.html">What to Bring</a></li><li><a href="http://ica.ac.nz/international-students/what-to-leave-behind.html">What to leave behind</a></li><li><a href="http://ica.ac.nz/international-students/the-climate-of-new-zealand.html"> The Climate of New Zealand</a></li><li><a href="http://ica.ac.nz/international-students/keeping-copies-of-important-documents.html">Keeping Copies of Important Documents</a></li><li><a href="http://ica.ac.nz/international-students/changing-money.html">Changing Money</a></li><li><a href="http://ica.ac.nz/international-students/travel-and-health-insurance.html">Travel and Health Insurance</a></li><li><a href="http://ica.ac.nz/international-students/helping-yourself-learn-english.html">Helping yourself learn English</a></li></ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown yamm-fw">
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        PATHWAYS<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="border-width:0px;background-color:black">
+                        <li>
+                            <div class="row" style="padding:20px;">
+                                <div class="col-md-4">
+                                    <h3 style="color:#e1c886;margin-top:0px;">ICA Internal Pathways</h3>
+                                    <ul><li><a href="http://ica.ac.nz/pathways/ndb-level-5-nzim-level-6.html">NDB (Level 5) + NZIM  (Level 6)</a></li><li><a href="http://ica.ac.nz/pathways/ndc-level-5-nzim-level-6.html">NDC (Level 5) + NZIM  (Level 6)</a></li><li><a href="http://ica.ac.nz/pathways/ndb-level-5-dcs-level-7.html">NDB (Level 5) + DCS (Level 7)</a></li><li><a href="http://ica.ac.nz/pathways/ndc-level-5-dcs-level-7.html">NDC (Level 5) + DCS (Level 7)</a></li><li><a href="http://ica.ac.nz/pathways/ndb-level-5-db-level-7.html">NDB (Level 5) + DB (Level 7)</a></li><li><a href="http://ica.ac.nz/pathways/ndc-level-5-db-level-7.html">NDC (Level 5) + DB (Level 7)</a></li><li><a href="http://ica.ac.nz/pathways/ndb-level-5-dcs-level-7.html">NDB (Level 5) + DCS (Level 7)</a></li><li><a href="http://ica.ac.nz/pathways/nzim-level-5-db-level-7.html">NZIM (Level 5) + DB (Level 7)</a></li></ul>
+                                </div>
+                                <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Academic Partnerships</h3>
+                                    <ul><li><a href="http://ica.ac.nz/pathways/pathway-to-massey-university.html">Pathway to Massey University</a></li><li><a href="http://ica.ac.nz/pathways/pathway-to-griffith-university.html">Pathway to Griffith University</a></li><li><a href="http://ica.ac.nz/pathways/pathway-to-auckland-institute-of-studies.html">Pathway to Auckland Institute of Studies</a></li><li><a href="http://ica.ac.nz/pathways/pathway-to-york-st-john-university.html">Pathway to York St John University</a></li><li><a href="http://ica.ac.nz/pathways/pathway-to-northtec.html">Pathway to NorthTec</a></li></ul>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown yamm-fw">
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        SERVICES<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="border-width:0px;background-color:black">
+                        <li>
+                            <div class="row" style="padding:20px;">
+                                <div class="col-md-4">
+                                    <h3 style="color:#e1c886;margin-top:0px;">Apply Now</h3>
+                                    <ul><li><a href="http://ica.ac.nz/apply-now/how-to-apply.html">How to Apply</a></li><li><a href="http://ica.ac.nz/apply-now/enrolment-forms.html">Enrolment Forms</a></li><li><a href="http://ica.ac.nz/apply-now/request-information.html">Request Information</a></li><li><a href="http://ica.ac.nz/apply-now/faqs.html">FAQs</a></li></ul>
+                                </div>
+                                <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                    <h3 style="color:#e1c886;margin-top:0px;">STUDENT SUPPORT</h3>
+                                    <ul><li><a href="http://ica.ac.nz/student-support-services/administration-support-services.html">Administration Support Services</a></li><li><a href="http://ica.ac.nz/student-support-services/academic-settlement-support.html">Academic &amp; Settlement Support</a></li><li><a href="http://ica.ac.nz/student-support-services/students-placement-support.html">Students Placement Support</a></li></ul>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                @*<li id="mainEvent">
+                        <a href="/Home/Index">
+                            <i class="fa fa-commenting"></i> <span>Events</span>
+                        </a>
+                    </li>
+                    <li id="mainAlumni">
+                        <a href="/Home/AlumniPublic">
+                            <i class="fa fa-group"></i> <span>Alumni</span>
+                        </a>
+                    </li>*@
+                @if (User != null && User.IsInRole("Maintenance"))
+                {
+                    <li class="dropdown yamm-fw">
+                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            MY THINGS<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" style="border-width:0px;background-color:black">
+                            <li>
+                                <div class="row" style="padding:20px;">
+                                    <div class="col-md-4">
+                                        <h3 style="color:#e1c886;margin-top:0px;">Website maintenance</h3>
+                                        <ul>
+                                            <li><a href="#">Main page</a></li>
+                                            <li><a href="#">Event</a></li>
+                                            <li><a href="/Alumni/Index">Alumni</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                        <h3 style="color:#e1c886;margin-top:0px;">System Management</h3>
+                                        <ul>
+                                            <li><a href="#">User</a></li>
+                                            <li><a href="#">Moodle management</a></li>
+                                            <li><a href="#">Others</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4" style="text-align:left;border-left:solid;border-color:grey;border-width:1px;">
+                                        <h3 style="color:#e1c886;margin-top:0px;">My profile</h3>
+                                        <p>Hello +@User.Identity.Name</p>
+                                        <img src="~/Images/Alumni/4.jpg" />
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @*<li id="mainHelp">
+                        <a href="/Home/Help">
+                            <i class="fa fa-link"></i> <span>Help</span>
+                        </a>
+                    </li>*@
+            </ul>
+
+            @Html.Partial("_LoginPartial")
+        </nav>
+    </div>
+</nav>
+

@@ -1,0 +1,246 @@
+﻿@using ica.website.Helpers
+@model ica.website.Models.Alumni.UserViewModel
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-1.10.4.js"></script>
+<script src="~/Scripts/jquery.fileupload.js"></script>
+@{
+    ViewBag.Title = "Edit";
+    var styleRemark = "display:none";
+    if (!string.IsNullOrEmpty(User.Identity.Name) && User.IsInRole("Student Comment"))
+    {
+        styleRemark = "display:block";
+    }
+}
+<div class="container">
+    <div class="row" style="margin-top:20px;">
+        <div class="col-md-2">
+            <h2>@ViewBag.Title</h2>
+            @Html.ActionLink("Return", "Index", null, new { @class = "btn btn-primary", style = "min-width:160px;" })
+            @Html.Partial("_WebButtons", "Alumni")
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-8">
+
+                </div>
+                <div class="col-md-4" style="margin-bottom:10px;">
+                    <div class="col-md-6">
+                        <input type="button" value="Save Alumni" onclick="formSubmit()" class="btn btn-primary" />
+                    </div>
+                    <div class="col-md-6">
+                        <form id="uploadImage" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="alumniId" value="0">
+                            <div class="fileupload-buttonbar">
+                                <span class="fileinput-button">
+                                    <a href="javascript:void(0)" class="btn btn-primary">Header Image</a>
+                                    <input type="file" name="files">
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @using (Html.BeginForm("Edit", "Alumni", FormMethod.Post, new { id = "alumniForm" }))
+        {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(d=>d.PasswordHash)
+        @Html.HiddenFor(d => d.SecurityStamp)
+        <div class="col-md-12">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-6">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.StudentId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Company, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobTitle, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JobTitle, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobStatus, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.JobStatus, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JobStatus, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobTypeId, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.JobTypeId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.JobTypeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GraduationDate, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GraduationDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.GraduationDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="NewInstituteName">New Institute</label>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.NewInstituteName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NewInstituteName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.CountryId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Relevent, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-2">
+                        <div class="checkbox" style="margin-left:20px;">
+                            @Html.EditorFor(model => model.Relevent)
+                            @Html.ValidationMessageFor(model => model.Relevent, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @Html.LabelFor(model => model.Public, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-3">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Public)
+                            @Html.ValidationMessageFor(model => model.Public, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HeaderImage, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <img id="ShowHeaderImage" src="@Model.HeaderImage" class="img-responsive" style="max-width:150px;max-height:150px;" />
+                        @Html.HiddenFor(model => model.HeaderImage)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style=@styleRemark>
+            <label>Remark</label>
+            @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <br />
+        <div class="col-md-12">
+            <label>Description</label>
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        }
+        </div>
+    </div>
+    </div>
+    @section scripts {
+        <script type="text/javascript">
+            $(function () {
+                //$('#Description').summernote();
+                $('#Description').summernote({
+                    height: 200,                 // set editor height
+                    minHeight: 200,             // set minimum height of editor
+                    maxHeight: null,             // set maximum height of editor
+                });
+                $('#Remark').summernote({
+                    height: 200,                 // set editor height
+                    minHeight: 200,             // set minimum height of editor
+                    maxHeight: null,             // set maximum height of editor
+                });
+                $('#Description').code($('#Description').val());
+                $('#Remark').code($('#Remark').val());
+                $('#uploadImage').fileupload({
+                    dataType: 'json',
+                    add: function (e, data) {
+                        $("#busy").css("display", "block");
+                        data.submit();
+                    },
+                    done: function (e, data) {
+                        $("#busy").css("display", "none");
+                    },
+                    url: '/Alumni/UploadImage',
+                    success: function (data) {
+
+                        if (data.indexOf("Alumni") > 0) {
+                            $("#ShowHeaderImage").attr("src", data);
+                            $("#HeaderImage").val(data);
+                        } else {
+                            alert("please contact admin.");
+                        }
+                    },
+                    error: function (failure) {
+                        alert(failure.responseText);
+                    }
+                });
+            })
+
+            function setDescription() {
+                var des = $('#Description').code();
+                $('#Description').val(des);
+                var remark = $('#Remark').code();
+                $('#Remark').val(remark);
+            }
+            function formSubmit() {
+                setDescription();
+                $("#alumniForm").submit();
+            }
+        </script>
+    }

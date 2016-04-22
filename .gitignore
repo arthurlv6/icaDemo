@@ -234,3 +234,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/ICA/ica.website/Web.Release.config
+/ICA/ica.website/Web.Debug.config
+/ICA/ica.website/Web.config

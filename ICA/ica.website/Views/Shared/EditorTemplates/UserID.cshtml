@@ -1,0 +1,15 @@
+﻿@using AppFrameMVC5.Models
+@using AppFrameMVC5.Infrastructure
+@model string
+@{
+    var dbContext = Context.GetContainer().GetInstance<ApplicationDbContext>();
+
+    var availableUsers = dbContext.Users.Select(u => new SelectListItem
+    {
+        Text = u.UserName,
+        Value = u.Id,
+        Selected = u.Id == Model
+    }).ToArray();
+}
+
+@Html.DropDownList("", availableUsers, new { @class = "form-control" })

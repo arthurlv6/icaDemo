@@ -1,0 +1,73 @@
+﻿@using ica.website.Models;
+@using ica.website.Models.Operator;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model OperatorViewModel
+@{
+    var roles = CacheHelper.GetCache<IdentityRole>(CacheType.IdentityRole).ToList();
+}
+@using (Ajax.BeginForm("_OperatorEdit", "Operator", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessReturnOperatorEdit" + Model.IdForJS, OnFailure = "OnFailure" }, new { Id = "Ajaxform" }))
+{
+<table style="height:100%;width:100%">
+    <tr>
+        <td valign="middle">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel">Edit operator @Model.UserName</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>User's roles</label>
+                            </div>
+                            @Html.HiddenFor(d=>d.Id)
+                            @foreach (var role in roles)
+                            {
+                                var check = "";
+                                if (Model.Roles.Any(d => d.RoleId == role.Id))
+                                {
+                                    check = " checked ";
+                                }
+                                <div class="col-md-3">
+                                    <input class="class_name" id=@Html.Raw("RolePosted_ids" + role.Id) name="RolePosted.ids" @check type="checkbox" value=@role.Id>
+                                    <label class="class_name" style="font-weight:normal;" for=@Html.Raw("RolePosted_ids" + role.Id)>@role.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <img class="pull-left" src="/Images/Busy.gif" id=@Html.Raw("runing"+Model.IdForJS) style="display: none" />
+                        <label class="pull-left" id=@Html.Raw("comfirmMessage"+Model.IdForJS)></label>
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+}
+<script type="text/javascript">
+    function @Html.Raw("OnSuccessReturnOperatorEdit"+@Model.IdForJS.ToString()+"(data, status, xhr)") {
+        var busy=@Html.Raw("'"+"#runing"+Model.IdForJS + "'");
+        $(busy).css("display", "block");
+        var modalId = @Html.Raw("'"+"#operatorModalEdit" + @Model.IdForJS + "'");
+        var cinfirmMessage=@Html.Raw("'" + "#comfirmMessage" + Model.IdForJS+ "'");
+        if (data == "-1") {
+            $(cinfirmMessage).text("Please check your input data and contact your administrator.");
+            $(busy).css("display", "none");
+        } else if (data == "-2") {
+            $(cinfirmMessage).text("Please check the email address, we failed to send a message to the address.");
+            $(busy).css("display", "none");
+        } else if (data == "-3") {
+            $(cinfirmMessage).text("Your email is already existed in the system,please change another one.");
+            $(busy).css("display", "none");
+        } else{
+            window.location.reload();
+        }
+    }
+</script>
+
+
+

@@ -1,0 +1,28 @@
+﻿@using ica.website.Domain;
+@model IEnumerable<WebMenu>
+@{
+    int parentId = Convert.ToInt32(ViewData["parentId"]);
+}
+@foreach (var item in Model.Where(d => d.ParentId == parentId))
+{
+    <tr>
+        <td style="padding-left:20px;">
+            @Html.HiddenFor(modelItem => item.Id)
+            @Html.TextBoxFor(modelItem => item.Name, new { @class = "form-control", style = "border-color:blue" })
+        </td>
+        <td>
+            @Html.HiddenFor(modelItem => item.Link)
+        </td>
+        <td>
+            @Html.TextBoxFor(modelItem => item.Order, new { @class = "form-control", style = "width:80px;", type = "number" })
+        </td>
+        <td></td>
+        <td>
+            <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalAdd" + item.Id)>Add</a>
+            @Html.Partial("_Add", new WebMenu { ParentId = item.Id, LanguageId = item.LanguageId })
+            <a href="#" data-toggle="modal" data-target=@Html.Raw("#ModalDelete" + item.Id)>Delete</a>
+            @Html.Partial("_Delete", item)
+        </td>
+    </tr>
+    @Html.Partial("_LastMenu", Model.Where(d => d.ParentId == item.Id))
+}
